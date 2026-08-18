@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{465EDA84-7538-4E09-AE82-4AC2E4FDC581}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWebCdDemo", "src\NetWebCdDemo\NetWebCdDemo.csproj", "{A7B78AF0-C187-4E52-BD37-FF16F5EF99A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7E2E50BB-89F9-4835-85DC-E9EA0D3656E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetWebCdDemo.Tests", "tests\NetWebCdDemo.Tests\NetWebCdDemo.Tests.csproj", "{C2835216-C89B-4A5C-B145-D4EEAF82D0AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7B78AF0-C187-4E52-BD37-FF16F5EF99A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7B78AF0-C187-4E52-BD37-FF16F5EF99A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7B78AF0-C187-4E52-BD37-FF16F5EF99A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7B78AF0-C187-4E52-BD37-FF16F5EF99A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2835216-C89B-4A5C-B145-D4EEAF82D0AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2835216-C89B-4A5C-B145-D4EEAF82D0AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2835216-C89B-4A5C-B145-D4EEAF82D0AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2835216-C89B-4A5C-B145-D4EEAF82D0AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A7B78AF0-C187-4E52-BD37-FF16F5EF99A0} = {465EDA84-7538-4E09-AE82-4AC2E4FDC581}
+		{C2835216-C89B-4A5C-B145-D4EEAF82D0AD} = {7E2E50BB-89F9-4835-85DC-E9EA0D3656E0}
+	EndGlobalSection
+EndGlobal
