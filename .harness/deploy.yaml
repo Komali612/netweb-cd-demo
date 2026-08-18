@@ -1,0 +1,37 @@
+pipeline:
+  name: Deploy netweb-cd-demo
+  identifier: deploy_netweb_cd_demo
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  stages:
+  - stage:
+      name: Deploy
+      identifier: Deploy
+      type: Custom
+      spec:
+        execution:
+          steps:
+          - step:
+              type: ShellScript
+              name: Deploy to laptop
+              identifier: Deploy
+              timeout: 15m
+              spec:
+                shell: Bash
+                onDelegate: true
+                delegateSelectors:
+                - laptop
+                source:
+                  type: Inline
+                  spec:
+                    script: "set +e\nTAG=\"<+pipeline.variables.imageTag>\"\nIMAGE=\"ghcr.io/komali612/netweb-cd-demo:$TAG\"\nAPP=\"netweb-cd-demo\"\nPORT=\"8080\"\necho \"Deploying $IMAGE  ->  container '$APP' on port $PORT\"\n\n# Remember the currently-running image so we can roll back to it if needed.\nPREV=\"$(docker inspect --format '{{.Config.Image}}' \"$APP\" 2>/dev/null || true)\"\necho \"Currently running image: ${PREV:-<none>}\"\n\nif ! docker pull \"$IMAGE\"; then\n  echo \"Could not pull $IMAGE -- leaving the current deployment untouched.\"\n  exit 1\nfi\n\ndocker rm -f \"$APP\" >/dev/null 2>&1 || true\ndocker run -d --name \"$APP\" --restart unless-stopped -p 8080:8080 \"$IMAGE\"\n\nhealthy=\"\"; code=\"000\"\nfor i in $(seq 1 15); do\n  running=\"$(docker inspect --format '{{.State.Running}}' \"$APP\" 2>/dev/null || echo false)\"\n  if [ \"$running\" = \"true\" ]; then\n    code=\"$(curl -s -o /dev/null -w '%{http_code}' \"http://host.docker.internal:$PORT/\" 2>/dev/null || echo 000)\"\n    if [ \"$code\" != \"000\" ]; then healthy=\"yes\"; break; fi\n  fi\n  sleep 2\ndone\n\nif [ -n \"$healthy\" ]; then\n  echo \"Deploy successful -- '$APP' is up and answering (HTTP $code).\"\n  exit 0\nfi\n\necho \"New container failed its health check. Recent logs:\"\ndocker logs --tail 50 \"$APP\" 2>&1 || true\nif [ -n \"$PREV\" ] && [ \"$PREV\" != \"$IMAGE\" ]; then\n  echo \"Rolling back to previous image: $PREV\"\n  docker rm -f \"$APP\" >/dev/null 2>&1 || true\n  docker run -d --name \"$APP\" --restart unless-stopped -p 8080:8080 \"$PREV\"\n  echo \"Rolled back to $PREV.\"\nelse\n  echo \"No previous image to roll back to (first deploy?).\"\nfi\nexit 1\n"
+                environmentVariables: []
+                outputVariables: []
+      tags: {}
+  variables:
+  - name: imageTag
+    type: String
+    description: GHCR image tag (the CI commit SHA)
+    required: true
+    value: <+input>
